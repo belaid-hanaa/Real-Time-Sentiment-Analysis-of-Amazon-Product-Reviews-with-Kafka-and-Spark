@@ -3,3 +3,5 @@ kafka-python
 pymongo
 numpy
 pandas
+nltk
+pyarrow
