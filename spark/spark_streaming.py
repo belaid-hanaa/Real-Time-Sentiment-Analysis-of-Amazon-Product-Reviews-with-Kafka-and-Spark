@@ -51,13 +51,18 @@ def clean_text_udf(texts: pd.Series) -> pd.Series:
 
     return texts.apply(clean)
 def write_to_mongo(batch_df, batch_id):
-    batch_df.write \
-        .format("mongodb") \
-        .mode("append") \
-        .option("uri", "mongodb://mongodb:27017") \
-        .option("database", "amazon") \
-        .option("collection", "predictions") \
-        .save()
+    print(f"write_to_mongo called for batch {batch_id}")
+    print(f"Number of records: {batch_df.count()}")
+    batch_df.show(truncate=True)  # Voir les données avant insertion
+    try:
+        batch_df.write \
+            .format("mongo") \
+            .mode("append") \
+            .option("uri", "mongodb://mongo:27017/amazon.predictions") \
+            .save()
+        print(f"Successfully written batch {batch_id} to MongoDB")
+    except Exception as e:
+        print(f"Failed to write to MongoDB for batch {batch_id}: {str(e)}")
 
 
 def main():
@@ -65,11 +70,11 @@ def main():
     spark = SparkSession.builder \
         .appName("AmazonReviewSentimentStreaming") \
         .master("spark://spark-master:7077") \
-        .config("spark.mongodb.output.uri", "mongodb://mongodb:27017/amazon.predictions") \
+        .config("spark.jars.packages", "org.mongodb.spark:mongo-spark-connector_2.12:3.0.1") \
         .getOrCreate()
     spark.sparkContext.setLogLevel("WARN")
 
-    # 2. Définir le schéma des données JSON
+    
     schema = StructType().add("reviewText", StringType())
 
     # 3. Lire depuis Kafka
