@@ -75,6 +75,7 @@ services:
     ports:
       - "7077:7077"        # Port Spark Master
       - "8080:8080"        # Web UI Spark Master
+      - "8888:8888"
     networks:
       - default
 

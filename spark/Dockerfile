@@ -12,7 +12,8 @@ WORKDIR /app
 # Copier les fichiers nécessaires
 COPY requirements.txt /app/
 COPY spark_streaming.py /app/
-COPY review_sentiment/ /opt/bitnami/spark/model/review_sentiment
+COPY model/ /app/model/
+COPY model/review_sentiment/ /opt/bitnami/spark/model/review_sentiment
 
 # Installer les paquets Python requis (incluant nltk)
 RUN pip3 install --no-cache-dir -r /app/requirements.txt
@@ -23,4 +24,4 @@ RUN mkdir -p /opt/nltk_data && \
     python3 -c "import nltk; nltk.download('stopwords', download_dir='/opt/nltk_data'); nltk.download('wordnet', download_dir='/opt/nltk_data')"
 
 # Revenir à l'utilisateur Spark
-USER 1001
+USER root

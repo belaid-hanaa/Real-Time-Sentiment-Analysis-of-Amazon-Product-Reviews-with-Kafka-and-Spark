@@ -1,18 +1,10 @@
-import re
 from pyspark.sql.functions import udf, col, from_json
 from pyspark.sql.types import StructType, StringType
 from pyspark.ml import PipelineModel
 from pyspark.sql import SparkSession
-import nltk
-from nltk.stem import WordNetLemmatizer
-from nltk.corpus import stopwords
+import re
 from pyspark.sql.functions import pandas_udf
-
-
-import nltk
 import os
-
-
 import pandas as pd
 
 @pandas_udf(StringType())
