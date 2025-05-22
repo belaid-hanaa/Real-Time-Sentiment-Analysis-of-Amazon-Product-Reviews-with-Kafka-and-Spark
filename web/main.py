@@ -32,7 +32,9 @@ templates = Jinja2Templates(directory="templates")
 
 
 
-KAFKA_BROKERS = os.environ.get("KAFKA_BOOTSTRAP_SERVERS").split(",")
+import os
+
+KAFKA_BOOTSTRAP_SERVERS = os.getenv("KAFKA_BOOTSTRAP_SERVERS", "localhost:29092,localhost:29093,localhost:29094")
 MONGODB_URL = os.environ.get("MONGODB_URL", "mongodb://mongodb:27017/")
 
 
@@ -78,7 +80,7 @@ async def startup_event():
     loop = asyncio.get_event_loop()
     consumer = AIOKafkaConsumer(
         "amazon",
-        bootstrap_servers=KAFKA_BROKERS,
+        bootstrap_servers=KAFKA_BOOTSTRAP_SERVERS,
         group_id="fastapi-group",
         auto_offset_reset="latest",
         enable_auto_commit=True

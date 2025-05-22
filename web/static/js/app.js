@@ -6,7 +6,7 @@ function connectWebSocket() {
     document.getElementById('connection-status').classList.remove('connected');
     document.getElementById('status-text').textContent = 'Connecting...';
 
-    websocket = new WebSocket(`ws://localhost:8005/ws/kafka`);
+    websocket = new WebSocket(`ws://localhost:8001/ws/kafka`);
 
     websocket.onopen = function () {
         document.getElementById('connection-status').classList.add('connected');

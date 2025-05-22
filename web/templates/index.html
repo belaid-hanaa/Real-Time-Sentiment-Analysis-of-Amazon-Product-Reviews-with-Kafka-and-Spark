@@ -10,54 +10,73 @@
 <body>
     <header>
         <h1><span>Amazon</span> Review Sentiment Analysis</h1>
+        <nav class="navbar">
+            <button onclick="showSection('dashboard')">Dashboard</button>
+            <button onclick="showSection('realtime')">Real-Time Stream</button>
+        </nav>
         <div class="status-indicator">
             <div id="connection-status" class="status-dot"></div>
             <span id="status-text">Connecting...</span>
         </div>
     </header>
 
-    <div class="dashboard">
-        <div class="stats-grid">
-            <div class="card stat-card">
-                <div class="stat-label">Total Reviews</div>
-                <div id="total-reviews" class="stat-value">0</div>
-            </div>
-            <div class="card stat-card">
-                <div class="stat-label">Positive</div>
-                <div id="positive-count" class="stat-value">0</div>
-            </div>
-            <div class="card stat-card">
-                <div class="stat-label">Negative</div>
-                <div id="negative-count" class="stat-value">0</div>
-            </div>
-            <div class="card stat-card">
-                <div class="stat-label">Average Sentiment</div>
-                <div id="avg-sentiment" class="stat-value">0</div>
-            </div>
-        </div>
-
-        <div class="card sentiment-distribution">
-            <div class="card-header">
-                <h2 class="card-title">Sentiment Distribution</h2>
-            </div>
-            <canvas id="distribution-chart"></canvas>
-        </div>
-
-        <div class="card sentiment-timeline">
-            <div class="card-header">
-                <h2 class="card-title">Sentiment Over Time</h2>
-            </div>
-            <canvas id="timeline-chart"></canvas>
-        </div>
-
-        <div class="card recent-reviews">
-            <div class="card-header">
-                <h2 class="card-title">Recent Reviews</h2>
-            </div>
-            <div id="review-list" class="review-list">
-                <div class="loading">
-                    <div class="spinner"></div>
+    <!-- SECTION 1: Dashboard (Offline Analysis) -->
+    <div id="dashboard" class="section">
+        <div class="dashboard">
+            <div class="stats-grid">
+                <div class="card stat-card">
+                    <div class="stat-label">Total Reviews</div>
+                    <div id="total-reviews" class="stat-value">0</div>
                 </div>
+                <div class="card stat-card">
+                    <div class="stat-label">Positive</div>
+                    <div id="positive-count" class="stat-value">0</div>
+                </div>
+                <div class="card stat-card">
+                    <div class="stat-label">Negative</div>
+                    <div id="negative-count" class="stat-value">0</div>
+                </div>
+                <div class="card stat-card">
+                    <div class="stat-label">Average Sentiment</div>
+                    <div id="avg-sentiment" class="stat-value">0</div>
+                </div>
+            </div>
+
+            <div class="card sentiment-distribution">
+                <div class="card-header">
+                    <h2 class="card-title">Sentiment Distribution</h2>
+                </div>
+                <canvas id="distribution-chart"></canvas>
+            </div>
+
+            <div class="card sentiment-timeline">
+                <div class="card-header">
+                    <h2 class="card-title">Sentiment Over Time</h2>
+                </div>
+                <canvas id="timeline-chart"></canvas>
+            </div>
+
+            <div class="card recent-reviews">
+                <div class="card-header">
+                    <h2 class="card-title">Recent Reviews</h2>
+                </div>
+                <div id="review-list" class="review-list">
+                    <div class="loading">
+                        <div class="spinner"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECTION 2: Real-Time Stream -->
+    <div id="realtime" class="section" style="display: none;">
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">Live Sentiment Feed</h2>
+            </div>
+            <div id="live-feed" class="live-feed">
+                <!-- Real-time entries will be appended here -->
             </div>
         </div>
     </div>
