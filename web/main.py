@@ -9,6 +9,8 @@ import json
 from bson import ObjectId
 from typing import List
 import pymongo
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 
 app = FastAPI()
 
@@ -19,6 +21,13 @@ app.add_middleware(
     allow_methods=["*"],  # Allows all methods
     allow_headers=["*"],  # Allows all headers
 )
+
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
+
+@app.get("/")
+async def get_dashboard():
+    return FileResponse("static/index.html")
 
 client = pymongo.MongoClient("mongodb://localhost:27017/")
 db = client["amazon"]
