@@ -68,7 +68,11 @@ def main():
     spark.sparkContext.setLogLevel("WARN")
 
     
-    schema = StructType().add("reviewText", StringType())
+    schema = StructType() \
+        .add("asin", StringType()) \
+        .add("reviewText", StringType()) \
+        .add("reviewTime", StringType()) \
+        .add("reviewerName", StringType())
 
     # 3. Lire depuis Kafka
     kafka_servers = "kafka1:9092,kafka2:9093,kafka3:9094"
@@ -83,8 +87,14 @@ def main():
     # 4. Extraire le texte des avis
     df_reviews = df_kafka.selectExpr("CAST(value AS STRING)") \
         .select(from_json(col("value"), schema).alias("data")) \
-        .select(col("data.reviewText").alias("reviewText")) \
-        .na.drop()
+        .select(
+            col("data.asin").alias("asin"),
+            col("data.reviewText").alias("reviewText"),
+            col("data.reviewTime").alias("reviewTime"),
+            col("data.reviewerName").alias("reviewerName")
+        ) \
+        .na.drop(subset=["reviewText"])  # Facultatif : on ne droppe que si reviewText est nul
+
 
     df_cleaned = df_reviews.withColumn("clean_text", clean_text_udf(col("reviewText")))
 
@@ -97,7 +107,7 @@ def main():
     df_predictions = pipeline_model.transform(df_cleaned)
 
     # 8. Résultat final
-    df_result = df_predictions.select("reviewText", "prediction")
+    df_result = df_predictions.select("asin", "reviewText","reviewTime","reviewerName", "prediction")
 
     # 9. Affichage en console
     console_query = df_result.writeStream \

@@ -1,4 +1,4 @@
-from fastapi import FastAPI, WebSocket, WebSocketDisconnect
+from fastapi import FastAPI, WebSocket, WebSocketDisconnect,Request
 import uvicorn
 from fastapi.middleware.cors import CORSMiddleware
 import os
@@ -11,6 +11,7 @@ from typing import List
 import pymongo
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
+from fastapi.templating import Jinja2Templates
 
 app = FastAPI()
 
@@ -23,18 +24,23 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Static file serving
+
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
-# ✅ Lire les variables d’environnement
-KAFKA_BROKERS = os.environ.get("KAFKA_BOOTSTRAP_SERVERS", "kafka1:9092").split(",")
+# Configuration des templates Jinja2
+templates = Jinja2Templates(directory="templates")
+
+
+
+KAFKA_BROKERS = os.environ.get("KAFKA_BOOTSTRAP_SERVERS").split(",")
 MONGODB_URL = os.environ.get("MONGODB_URL", "mongodb://mongodb:27017/")
 
-@app.get("/")
-async def get_dashboard():
-    return FileResponse("static/index.html")
 
-# ✅ Connexion MongoDB (non async ici car tu utilises pymongo)
+@app.get("/")
+async def get_dashboard(request: Request):
+    return templates.TemplateResponse("index.html", {"request": request})
+
+
 client = pymongo.MongoClient(MONGODB_URL)
 db = client["amazon"]
 collection = db["predictions"]

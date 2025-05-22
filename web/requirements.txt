@@ -3,3 +3,4 @@ uvicorn[standard]
 motor
 aiokafka
 pymongo
+jinja2
