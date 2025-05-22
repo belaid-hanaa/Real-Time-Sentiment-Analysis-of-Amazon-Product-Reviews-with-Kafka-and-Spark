@@ -11,8 +11,8 @@
     <header>
         <h1><span>Amazon</span> Review Sentiment Analysis</h1>
         <nav class="navbar">
-            <a href="#dashboard">Dashboard</a>
-            <a href="#realtime">Real-Time Stream</a>
+            <a href="/">Dashboard</a>
+            <a href="/realtime">Real-Time Stream</a>
         </nav>
         <div class="status-indicator">
             <div id="connection-status" class="status-dot"></div>
@@ -73,34 +73,6 @@
         </div>
     </div>
 
-    <!-- SECTION 2: Real-Time Stream -->
-    <div id="realtime" class="section" style="display: none;">
-        <div class="card">
-            <div class="card-header">
-                <h2 class="card-title">Live Sentiment Feed</h2>
-            </div>
-            <div id="live-feed" class="live-feed">
-                <!-- Real-time entries will be appended here -->
-            </div>
-        </div>
-    </div>
-
     <script src="static/js/app.js"></script>
 </body>
-    <script>
-    document.querySelectorAll('.navbar a').forEach(link => {
-        link.addEventListener('click', function(e) {
-            e.preventDefault();
-            // Hide all sections
-            document.querySelectorAll('.section').forEach(sec => sec.style.display = 'none');
-            // Show the selected section
-            const target = this.getAttribute('href');
-            const section = document.querySelector(target);
-            if (section) section.style.display = '';
-            // Optionally, update active class
-            document.querySelectorAll('.navbar a').forEach(a => a.classList.remove('active'));
-            this.classList.add('active');
-        });
-    });
-    </script>
 </html>
