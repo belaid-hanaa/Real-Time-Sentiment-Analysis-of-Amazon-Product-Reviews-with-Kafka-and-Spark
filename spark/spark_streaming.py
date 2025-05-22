@@ -1,4 +1,4 @@
-from pyspark.sql.functions import udf, col, from_json
+from pyspark.sql.functions import col, from_json,to_json, struct
 from pyspark.sql.types import StructType, StringType
 from pyspark.ml import PipelineModel
 from pyspark.sql import SparkSession
@@ -6,6 +6,7 @@ import re
 from pyspark.sql.functions import pandas_udf
 import os
 import pandas as pd
+
 
 @pandas_udf(StringType())
 def clean_text_udf(texts: pd.Series) -> pd.Series:
@@ -111,6 +112,16 @@ def main():
         .foreachBatch(write_to_mongo) \
         .option("checkpointLocation", "/tmp/checkpoint/review_sentiment") \
         .trigger(processingTime='5 seconds') \
+        .start()
+    kafka_output_df = df_result.select(
+        to_json(struct(*df_result.columns)).alias("value")
+    )
+    kafka_query = kafka_output_df.writeStream \
+        .format("kafka") \
+        .option("kafka.bootstrap.servers", kafka_servers) \
+        .option("topic", "amazon") \
+        .option("checkpointLocation", "/tmp/kafka-checkpoint") \
+        .outputMode("append") \
         .start()
 
     # 11. Attente de fin

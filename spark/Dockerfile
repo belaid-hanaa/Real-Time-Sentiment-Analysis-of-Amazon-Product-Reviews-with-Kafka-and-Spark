@@ -23,5 +23,4 @@ ENV NLTK_DATA=/opt/nltk_data
 RUN mkdir -p /opt/nltk_data && \
     python3 -c "import nltk; nltk.download('stopwords', download_dir='/opt/nltk_data'); nltk.download('wordnet', download_dir='/opt/nltk_data')"
 
-# Revenir à l'utilisateur Spark
 USER root
