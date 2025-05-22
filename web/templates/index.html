@@ -11,8 +11,8 @@
     <header>
         <h1><span>Amazon</span> Review Sentiment Analysis</h1>
         <nav class="navbar">
-            <button onclick="showSection('dashboard')">Dashboard</button>
-            <button onclick="showSection('realtime')">Real-Time Stream</button>
+            <a href="#dashboard">Dashboard</a>
+            <a href="#realtime">Real-Time Stream</a>
         </nav>
         <div class="status-indicator">
             <div id="connection-status" class="status-dot"></div>
@@ -35,6 +35,10 @@
                 <div class="card stat-card">
                     <div class="stat-label">Negative</div>
                     <div id="negative-count" class="stat-value">0</div>
+                </div>
+                <div class="card stat-card">
+                    <div class="stat-label">Neutral</div>
+                    <div id="neutral-count" class="stat-value">0</div>
                 </div>
                 <div class="card stat-card">
                     <div class="stat-label">Average Sentiment</div>
@@ -83,4 +87,20 @@
 
     <script src="static/js/app.js"></script>
 </body>
+    <script>
+    document.querySelectorAll('.navbar a').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(sec => sec.style.display = 'none');
+            // Show the selected section
+            const target = this.getAttribute('href');
+            const section = document.querySelector(target);
+            if (section) section.style.display = '';
+            // Optionally, update active class
+            document.querySelectorAll('.navbar a').forEach(a => a.classList.remove('active'));
+            this.classList.add('active');
+        });
+    });
+    </script>
 </html>

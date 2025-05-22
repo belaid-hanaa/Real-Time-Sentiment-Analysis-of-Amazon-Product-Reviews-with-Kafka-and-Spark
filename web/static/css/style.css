@@ -249,3 +249,75 @@ header h1 span {
 @keyframes spin {
     to { transform: rotate(360deg); }
 }
+.navbar {
+    display: flex;
+    gap: 20px;
+}
+
+.navbar a {
+    color: white;
+    text-decoration: none;
+    padding: 8px 16px;
+    border-radius: var(--border-radius);
+    background-color: transparent;
+    font-weight: 600;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    cursor: pointer;
+}
+
+.navbar a:hover,
+.navbar a:focus {
+    background-color: var(--secondary-color);
+    color: var(--primary-color);
+    outline: none;
+}
+
+.navbar a.active {
+    background-color: var(--secondary-color);
+    color: var(--primary-color);
+    font-weight: 700;
+}
+.live-feed {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+}
+
+.review-block {
+    background-color: #ffffff;
+    border-left: 5px solid #007bff;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    padding: 1rem;
+    border-radius: 8px;
+    animation: fadeIn 0.3s ease-in;
+}
+
+.review-header {
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+.review-body p {
+    margin: 0.5rem 0;
+}
+
+.review-body .meta {
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.prediction-1 {
+    color: red;
+}
+.prediction-2 {
+    color: green;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
