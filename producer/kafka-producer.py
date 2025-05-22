@@ -3,7 +3,7 @@ import time
 from kafka import KafkaProducer
 
 # Configuration
-KAFKA_BROKERS = ['kafka1:9092', 'kafka2:9093', 'kafka3:9094']
+KAFKA_BROKERS = ['kafka2:9093']
 TOPIC_NAME = 'amazon_reviews'
 DATA_FILE = 'data_validation.json'
 

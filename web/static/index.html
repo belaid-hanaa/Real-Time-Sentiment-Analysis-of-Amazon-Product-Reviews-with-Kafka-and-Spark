@@ -331,7 +331,7 @@
             document.getElementById('status-text').textContent = 'Connecting...';
             
             // Create WebSocket connection
-            websocket = new WebSocket(`ws://${window.location.hostname}:8000/ws/kafka`);
+            websocket = new WebSocket(`ws://localhost:8005/ws/kafka`);
             
             websocket.onopen = function(e) {
                 document.getElementById('connection-status').classList.add('connected');

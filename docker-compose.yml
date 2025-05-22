@@ -117,3 +117,18 @@ services:
     command: ["python", "kafka-producer.py"]
     networks:
       - default
+  fastapi-app:
+    build: ./web
+    container_name: fastapi-app
+    depends_on:
+      - kafka1
+      - kafka2
+      - kafka3
+      - mongodb
+    ports:
+      - "8005:8005"
+    environment:
+      - KAFKA_BOOTSTRAP_SERVERS=kafka1:9092,kafka2:9093,kafka3:9094
+      - MONGODB_URL=mongodb://mongodb:27017/
+    networks:
+      - default

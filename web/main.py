@@ -1,4 +1,4 @@
-from fastapi import FastAPI,WebSocket, WebSocketDisconnect
+from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 import uvicorn
 from fastapi.middleware.cors import CORSMiddleware
 import os
@@ -14,25 +14,32 @@ from fastapi.responses import FileResponse
 
 app = FastAPI()
 
+# Middleware CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Allows all origins from the list
+    allow_origins=["*"],
     allow_credentials=True,
-    allow_methods=["*"],  # Allows all methods
-    allow_headers=["*"],  # Allows all headers
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
+# Static file serving
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
+# ✅ Lire les variables d’environnement
+KAFKA_BROKERS = os.environ.get("KAFKA_BOOTSTRAP_SERVERS", "kafka1:9092").split(",")
+MONGODB_URL = os.environ.get("MONGODB_URL", "mongodb://mongodb:27017/")
 
 @app.get("/")
 async def get_dashboard():
     return FileResponse("static/index.html")
 
-client = pymongo.MongoClient("mongodb://localhost:27017/")
+# ✅ Connexion MongoDB (non async ici car tu utilises pymongo)
+client = pymongo.MongoClient(MONGODB_URL)
 db = client["amazon"]
 collection = db["predictions"]
-# WebSocket connection manager
+
+# WebSocket Manager
 class ConnectionManager:
     def __init__(self):
         self.active_connections: List[WebSocket] = []
@@ -65,7 +72,7 @@ async def startup_event():
     loop = asyncio.get_event_loop()
     consumer = AIOKafkaConsumer(
         "amazon",
-        bootstrap_servers="localhost:9092",
+        bootstrap_servers=KAFKA_BROKERS,
         group_id="fastapi-group",
         auto_offset_reset="latest",
         enable_auto_commit=True
@@ -86,10 +93,10 @@ async def startup_event():
 async def get_reviews():
     reviews_cursor = collection.find({})
     reviews = []
-    async for item in reviews_cursor:
+    for item in reviews_cursor:  # `async for` remplacé par `for` car pymongo est sync
         item["_id"] = str(item["_id"])
         reviews.append(item)
     return reviews
 
 if __name__ == "__main__":
-    uvicorn.run("main:app", host="127.0.0.1", port=8000, reload=True)
+    uvicorn.run("main:app", host="0.0.0.0", port=8005)
