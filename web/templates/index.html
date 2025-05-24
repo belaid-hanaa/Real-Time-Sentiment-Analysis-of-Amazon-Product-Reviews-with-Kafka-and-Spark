@@ -3,76 +3,108 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Amazon Product Reviews Sentiment Analysis</title>
-    <link rel="stylesheet" href="static/css/style.css">
+    <title>Amazon Review Sentiment Analysis</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <header>
-        <h1><span>Amazon</span> Review Sentiment Analysis</h1>
-        <nav class="navbar">
-            <a href="/">Dashboard</a>
-            <a href="/realtime">Real-Time Stream</a>
-        </nav>
-        <div class="status-indicator">
-            <div id="connection-status" class="status-dot"></div>
-            <span id="status-text">Connecting...</span>
+    <nav class="navbar">
+        <div class="navbar-brand">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 3L20 8.5V15.5L12 21L4 15.5V8.5L12 3Z" stroke="#6b47ed" stroke-width="2" fill="rgba(107, 71, 237, 0.2)"/>
+                <circle cx="12" cy="12" r="3" fill="#6b47ed"/>
+            </svg>
+            Sentiment Analyzer
         </div>
-    </header>
+        <div class="nav-links">
+            <a href="/" class="nav-link active">Dashboard</a>
+            <a href="/realtime" class="nav-link">Real-time Analysis</a>
+            <a href="/products" class="nav-link">Products</a>
+        </div>
+    </nav>
 
-    <!-- SECTION 1: Dashboard (Offline Analysis) -->
-    <div id="dashboard" class="section">
-        <div class="dashboard">
-            <div class="stats-grid">
-                <div class="card stat-card">
-                    <div class="stat-label">Total Reviews</div>
-                    <div id="total-reviews" class="stat-value">0</div>
-                </div>
-                <div class="card stat-card">
-                    <div class="stat-label">Positive</div>
-                    <div id="positive-count" class="stat-value">0</div>
-                </div>
-                <div class="card stat-card">
-                    <div class="stat-label">Negative</div>
-                    <div id="negative-count" class="stat-value">0</div>
-                </div>
-                <div class="card stat-card">
-                    <div class="stat-label">Neutral</div>
-                    <div id="neutral-count" class="stat-value">0</div>
-                </div>
-                <div class="card stat-card">
-                    <div class="stat-label">Average Sentiment</div>
-                    <div id="avg-sentiment" class="stat-value">0</div>
-                </div>
+    <div class="container">
+        <div class="header">
+            <h1>Amazon Review Sentiment Analysis</h1>
+            <p class="subtitle">Real-time analysis powered by Kafka and Spark</p>
+        </div>
+
+        <div class="stats-container">
+            <div class="card stat-card">
+                <div class="stat-value" id="total-reviews">0</div>
+                <div class="stat-label">Total Reviews</div>
             </div>
+            
+            <div class="card stat-card">
+                <div class="stat-value sentiment-positive" id="positive-reviews">0</div>
+                <div class="stat-label">Positive Reviews</div>
+            </div>
+            
+            <div class="card stat-card">
+                <div class="stat-value sentiment-neutral" id="neutral-reviews">0</div>
+                <div class="stat-label">Neutral Reviews</div>
+            </div>
+            
+            <div class="card stat-card">
+                <div class="stat-value sentiment-negative" id="negative-reviews">0</div>
+                <div class="stat-label">Negative Reviews</div>
+            </div>
+        </div>
 
-            <div class="card sentiment-distribution">
+        <div class="charts-row">
+            <div class="card chart-card">
                 <div class="card-header">
                     <h2 class="card-title">Sentiment Distribution</h2>
+                    <div class="badge">
+                        <span class="realtime-indicator"></span>Live
+                    </div>
                 </div>
-                <canvas id="distribution-chart"></canvas>
+                <div class="chart-container">
+                    <canvas id="distributionChart"></canvas>
+                </div>
             </div>
-
-            <div class="card sentiment-timeline">
+            
+            <div class="card chart-card">
                 <div class="card-header">
-                    <h2 class="card-title">Sentiment Over Time</h2>
+                    <h2 class="card-title">Sentiment Timeline</h2>
+                    <div class="time-range">
+                        <button class="btn-sm active" data-range="7d">7d</button>
+                        <button class="btn-sm" data-range="30d">30d</button>
+                        <button class="btn-sm" data-range="all">All</button>
+                    </div>
                 </div>
-                <canvas id="timeline-chart"></canvas>
+                <div class="chart-container">
+                    <canvas id="timelineChart"></canvas>
+                </div>
             </div>
+        </div>
 
-            <div class="card recent-reviews">
+        <div class="row">
+            <div class="card">
                 <div class="card-header">
                     <h2 class="card-title">Recent Reviews</h2>
                 </div>
-                <div id="review-list" class="review-list">
-                    <div class="loading">
-                        <div class="spinner"></div>
-                    </div>
+                <div class="table-container">
+                    <table id="reviews-table">
+                        <thead>
+                            <tr>
+                                <th>Time</th>
+                                <th>Product</th>
+                                <th>Review</th>
+                                <th>Sentiment</th>
+                                <th>Score</th>
+                            </tr>
+                        </thead>
+                        <tbody id="reviews-body">
+                            <!-- Reviews will be populated here -->
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
 
-    <script src="static/js/app.js"></script>
+    <script src="{{ url_for('static', path='js/app.js') }}"></script>
 </body>
 </html>

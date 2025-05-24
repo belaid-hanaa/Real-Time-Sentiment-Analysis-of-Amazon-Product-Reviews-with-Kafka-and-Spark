@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Amazon Product Reviews Sentiment Analysis - Real-Time Stream</title>
+    <link rel="stylesheet" href="static/css/style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header>
+        <h1><span>Amazon</span> Review Sentiment Analysis</h1>
+        <nav class="navbar">
+            <a href="/">Dashboard</a>
+            <a href="/realtime">Real-Time Stream</a>
+        </nav>
+        <div class="status-indicator">
+            <div id="connection-status" class="status-dot"></div>
+            <span id="status-text">Connecting...</span>
+        </div>
+    </header>
+
+    <!-- Real-Time Stream content -->
+    <div id="realtime" class="section">
+        <div class="card">
+            <div class="card-header">
+                <h2 class="card-title">Live Sentiment Feed</h2>
+            </div>
+            <div id="live-feed" class="live-feed">
+                <!-- Real-time entries will appear here -->
+            </div>
+        </div>
+    </div>
+
+    <script src="static/js/realtime.js"></script>
+</body>
+</html>

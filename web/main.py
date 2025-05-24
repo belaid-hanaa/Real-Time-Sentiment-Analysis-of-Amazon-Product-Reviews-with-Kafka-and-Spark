@@ -34,6 +34,10 @@ async def get_dashboard(request: Request):
 async def get_realtime(request: Request):
     return templates.TemplateResponse("realtime.html", {"request": request})
 
+@app.get("/products")
+async def get_realtime(request: Request):
+    return templates.TemplateResponse("product.html", {"request": request})
+
 class ConnectionManager:
     def __init__(self):
         self.active_connections: List[WebSocket] = []
@@ -99,6 +103,18 @@ async def websocket_kafka(websocket: WebSocket):
             await asyncio.sleep(1)
     except WebSocketDisconnect:
         manager.disconnect(websocket)
+
+@app.get("/api/products")
+async def get_products():
+    # This uses the same data as the reviews endpoint
+    # The grouping by product is done in the frontend
+    reviews_cursor = collection.find({})
+    reviews = []
+    async for item in reviews_cursor:
+        item["_id"] = str(item["_id"])
+        reviews.append(item)
+    return reviews
+
 @app.get("/reviews")
 async def get_reviews():
     reviews_cursor = collection.find({})

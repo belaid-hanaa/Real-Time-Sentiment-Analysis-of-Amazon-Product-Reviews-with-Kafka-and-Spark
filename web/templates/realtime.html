@@ -1,37 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Amazon Product Reviews Sentiment Analysis - Real-Time Stream</title>
-    <link rel="stylesheet" href="static/css/style.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-time Sentiment Analysis</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <header>
-        <h1><span>Amazon</span> Review Sentiment Analysis</h1>
-        <nav class="navbar">
-            <a href="/">Dashboard</a>
-            <a href="/realtime">Real-Time Stream</a>
-        </nav>
-        <div class="status-indicator">
-            <div id="connection-status" class="status-dot"></div>
-            <span id="status-text">Connecting...</span>
+    <nav class="navbar">
+        <div class="navbar-brand">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 3L20 8.5V15.5L12 21L4 15.5V8.5L12 3Z" stroke="#6b47ed" stroke-width="2" fill="rgba(107, 71, 237, 0.2)"/>
+                <circle cx="12" cy="12" r="3" fill="#6b47ed"/>
+            </svg>
+            Sentiment Analyzer
         </div>
-    </header>
+        <div class="nav-links">
+            <a href="/" class="nav-link">Dashboard</a>
+            <a href="/realtime" class="nav-link active">Real-time Analysis</a>
+            <a href="/products" class="nav-link active">Products</a>
+        </div>
+    </nav>
 
-    <!-- Real-Time Stream content -->
-    <div id="realtime" class="section">
-        <div class="card">
-            <div class="card-header">
-                <h2 class="card-title">Live Sentiment Feed</h2>
+    <div class="container">
+        <div class="header">
+            <h1>Real-time Sentiment Analysis</h1>
+            <p class="subtitle">Live stream of Amazon product reviews</p>
+        </div>
+
+        <div class="connection-status">
+            <div class="status-indicator" id="connection-status"></div>
+            <span class="status-text" id="status-text">Connecting...</span>
+        </div>
+
+        <div class="row">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Sentiment Trend</h2>
+                </div>
+                <div class="chart-container">
+                    <canvas id="realtimeChart"></canvas>
+                </div>
             </div>
-            <div id="live-feed" class="live-feed">
-                <!-- Real-time entries will appear here -->
+        </div>
+
+        <div class="row">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">Live Reviews</h2>
+                    <div class="filter-controls">
+                        <button class="filter-btn active" data-filter="all">All</button>
+                        <button class="filter-btn positive" data-filter="positive">Positive</button>
+                        <button class="filter-btn neutral" data-filter="neutral">Neutral</button>
+                        <button class="filter-btn negative" data-filter="negative">Negative</button>
+                    </div>
+                </div>
+                <div class="feed-container" id="live-feed">
+                    <!-- Live reviews will appear here -->
+                    <div class="activity-indicator">
+                        <div class="pulse"></div>
+                        <span>Waiting for incoming reviews...</span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
-    <script src="static/js/realtime.js"></script>
+    <script src="{{ url_for('static', path='js/realtime.js') }}"></script>
 </body>
 </html>
